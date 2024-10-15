@@ -5,11 +5,18 @@ const helmet = require("helmet");
 const mongoSanitize = require("express-mongo-sanitize");
 const xss = require("xss-clean");
 const hpp = require("hpp");
+const cookieParser = require("cookie-parser");
+const userRouter = require("./routes/userRoutes");
+const AppError = require("./utils/appError");
+const globalErrorHandler = require("./controllers/errorController");
 
 const app = express();
 
 // Secure HTTP headers
 app.use(helmet());
+
+// Cookie Parser
+app.use(cookieParser());
 
 // Dev logging
 if (process.env.NODE_ENV === "development") {
@@ -34,5 +41,15 @@ app.use(mongoSanitize());
 app.use(xss());
 
 // Prevent parameter pollution
+// hpp*
+
+// Routes
+app.use(`${process.env.API_ROUTE}/users`, userRouter);
+app.all("*", (req, res, next) => {
+  next(new AppError(`The endpoint ${req.originalUrl} does not exist!`, 404));
+});
+
+// Global Error Handler
+app.use(globalErrorHandler);
 
 module.exports = app;
