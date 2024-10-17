@@ -11,4 +11,8 @@ router.route("/signout").get(authController.signout);
 
 // Routes for user data
 router.route("/me").get(authController.protect, userController.getUserProfile);
+router
+  .route("/createProfile")
+  .post(authController.protect, userController.createUserProfile);
+
 module.exports = router;
