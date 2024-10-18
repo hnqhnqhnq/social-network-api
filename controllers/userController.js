@@ -28,7 +28,7 @@ exports.createUserProfile = catchAsync(async (req, res, next) => {
     }
   );
   if (!updatedUser) {
-    return next(new AppError("User could not be updated!", 400));
+    return next(new AppError("User could not be updated.\n", 400));
   }
 
   res.status(200).json({
