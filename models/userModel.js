@@ -38,6 +38,10 @@ const userSchema = mongoose.Schema({
       message: "Passwords do not match.\n",
     },
   },
+  firstLogin: {
+    type: Boolean,
+    default: true,
+  },
   profilePicture: {
     type: String,
   },
