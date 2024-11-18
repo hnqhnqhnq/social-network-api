@@ -11,7 +11,7 @@ exports.getUserProfile = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.updateUser = catchAsync(async (req, res, next) => {
+exports.createUserProfile = catchAsync(async (req, res, next) => {
   if (!req.body.firstName || !req.body.lastName) {
     return next(new AppError("Enter your data.\n", 400));
   }

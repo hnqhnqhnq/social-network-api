@@ -13,6 +13,6 @@ router.route("/signout").get(authController.signout);
 router.route("/me").get(authController.protect, userController.getUserProfile);
 router
   .route("/createProfile")
-  .post(authController.protect, userController.updateUser);
+  .post(authController.protect, userController.createUserProfile);
 
 module.exports = router;

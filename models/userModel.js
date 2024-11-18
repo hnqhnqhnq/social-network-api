@@ -13,6 +13,11 @@ const userSchema = mongoose.Schema({
     required: false,
     validate: [validator.isAlpha, "Please provide a valid last name.\n"],
   },
+  username: {
+    type: String,
+    required: [true, "Please provide your username.\n"],
+    unique: true,
+  },
   email: {
     type: String,
     required: [true, "Please provide your email.\n"],
