@@ -43,6 +43,10 @@ const userSchema = mongoose.Schema({
       message: "Passwords do not match.\n",
     },
   },
+  birthday: {
+    type: String,
+    required: false,
+  },
   firstLogin: {
     type: Boolean,
     default: true,
