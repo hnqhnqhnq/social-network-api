@@ -7,6 +7,7 @@ const xss = require("xss-clean");
 const hpp = require("hpp");
 const cookieParser = require("cookie-parser");
 const userRouter = require("./routes/userRoutes");
+const postRouter = require("./routes/postRoutes");
 const AppError = require("./utils/appError");
 const globalErrorHandler = require("./controllers/errorController");
 
@@ -17,6 +18,9 @@ app.use(helmet());
 
 // Cookie Parser
 app.use(cookieParser());
+
+// Serve Static Files
+app.use("/uploads", express.static("uploads"));
 
 // Dev logging
 if (process.env.NODE_ENV === "development") {
@@ -45,6 +49,7 @@ app.use(xss());
 
 // Routes
 app.use(`${process.env.API_ROUTE}/users`, userRouter);
+app.use(`${process.env.API_ROUTE}/posts`, postRouter);
 app.all("*", (req, res, next) => {
   next(new AppError(`The endpoint ${req.originalUrl} does not exist!`, 404));
 });

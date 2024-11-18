@@ -28,6 +28,11 @@ exports.createUserProfile = catchAsync(async (req, res, next) => {
       new: true,
     }
   );
+
+  if (req.file) {
+    updatedUser.profilePicture = `/uploads/profile-pictures/${req.file.filename}`;
+  }
+
   if (!updatedUser) {
     return next(new AppError("User could not be updated.\n", 400));
   }
