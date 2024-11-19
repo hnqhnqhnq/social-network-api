@@ -19,7 +19,7 @@ router
     .route("/updateProfile")
     .post(
         authController.protect,
-        uploadProfilePicture.single("profilePic"),
+        uploadProfilePicture.single("profilePicture"),
         userController.updateUserProfile
     );
 

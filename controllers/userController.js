@@ -43,12 +43,18 @@ exports.createUserProfile = catchAsync(async (req, res, next) => {
 });
 
 exports.updateUserProfile = catchAsync(async (req, res, next) => {
+    let profilePicUrl = null;
+    if (req.file) {
+        profilePicUrl = `/upload/profile-pictures/${req.file.filename}`;
+    }
+
     const updatedUser = await User.findByIdAndUpdate(
         req.user._id,
         {
             firstName: req.body.firstName || req.user.firstName,
             lastName: req.body.lastName || req.user.lastName,
             birthDate: req.body.birthDate || req.user.birthDate,
+            profilePicture: profilePicUrl || req.user.profilePicture,
         },
         {
             runValidators: true,
