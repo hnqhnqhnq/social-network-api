@@ -1,6 +1,7 @@
 const express = require("express");
 const authController = require("./../controllers/authController");
 const userController = require("./../controllers/userController");
+const uploadProfilePicture = require("./../utils/multerConfigProfilePictures");
 
 const router = express.Router();
 
@@ -12,7 +13,14 @@ router.route("/signout").get(authController.signout);
 // Routes for user data
 router.route("/me").get(authController.protect, userController.getUserProfile);
 router
-  .route("/createProfile")
-  .post(authController.protect, userController.createUserProfile);
+    .route("/createProfile")
+    .post(authController.protect, userController.createUserProfile);
+router
+    .route("/updateProfile")
+    .post(
+        authController.protect,
+        uploadProfilePicture.single("profilePic"),
+        userController.updateUserProfile
+    );
 
 module.exports = router;

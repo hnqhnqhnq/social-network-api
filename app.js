@@ -5,7 +5,6 @@ const helmet = require("helmet");
 const mongoSanitize = require("express-mongo-sanitize");
 const xss = require("xss-clean");
 const hpp = require("hpp");
-const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const userRouter = require("./routes/userRoutes");
 const postRouter = require("./routes/postRoutes");
@@ -13,16 +12,6 @@ const AppError = require("./utils/appError");
 const globalErrorHandler = require("./controllers/errorController");
 
 const app = express();
-
-app.set("trust proxy", true);
-
-// CORS settings
-const corsOptions = {
-    origin: ["http://192.168.100.130:8081", "http://localhost:8081"],
-    methods: ["GET", "POST", "PATCH", "DELETE"],
-    credentials: true,
-};
-app.use(cors(corsOptions));
 
 // Secure HTTP headers
 app.use(helmet());
