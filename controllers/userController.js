@@ -48,7 +48,7 @@ exports.updateUserProfile = catchAsync(async (req, res, next) => {
         {
             firstName: req.body.firstName || req.user.firstName,
             lastName: req.body.lastName || req.user.lastName,
-            birthday: req.body.birthday || req.user.birthday,
+            birthDate: req.body.birthDate || req.user.birthDate,
         },
         {
             runValidators: true,
