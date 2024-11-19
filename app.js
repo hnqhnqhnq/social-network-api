@@ -14,7 +14,15 @@ const globalErrorHandler = require("./controllers/errorController");
 
 const app = express();
 
-app.use(cors());
+app.set("trust proxy", true);
+
+// CORS settings
+const corsOptions = {
+    origin: ["http://192.168.100.130:8081", "http://localhost:8081"],
+    methods: ["GET", "POST", "PATCH", "DELETE"],
+    credentials: true,
+};
+app.use(cors(corsOptions));
 
 // Secure HTTP headers
 app.use(helmet());
