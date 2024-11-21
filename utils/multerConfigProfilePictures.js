@@ -1,5 +1,6 @@
 const multer = require("multer");
 const path = require("path");
+const AppError = require("./appError");
 
 const allowedFileTypes = /jpeg|jpg|png|gif/;
 
@@ -22,7 +23,7 @@ const fileFilter = (req, file, cb) => {
    ) {
       cb(null, true);
    } else {
-      cb(new Error("Only image files are allowed!"), false);
+      cb(new AppError("Only image files are allowed!\n", 401), false);
    }
 };
 
