@@ -14,14 +14,6 @@ const globalErrorHandler = require("./controllers/errorController");
 
 const app = express();
 
-//cors
-app.use(
-   cors({
-      origin: ["http://192.168.0.145:8081"],
-      methods: ["GET", "POST", "PATCH", "DELETE"],
-   })
-);
-
 // Secure HTTP headers
 app.use(helmet());
 
