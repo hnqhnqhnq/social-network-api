@@ -17,7 +17,7 @@ const app = express();
 //cors
 app.use(
    cors({
-      origin: ["http://192.168.0.151:8081"],
+      origin: ["http://192.168.0.145:8081"],
       methods: ["GET", "POST", "PATCH", "DELETE"],
    })
 );
