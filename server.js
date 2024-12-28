@@ -15,7 +15,7 @@ mongoose
    .catch(() => console.log("Error while connecting to DB"));
 
 const port = process.env.PORT || 3000;
-const server = app.listen(port, "0.0.0.0", () => {
+const server = app.listen(port, () => {
    if (process.env.NODE_ENV === "development") {
       console.log(`Listening to port ${port}...`);
    }
