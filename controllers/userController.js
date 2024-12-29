@@ -54,7 +54,7 @@ exports.updateUserProfile = catchAsync(async (req, res, next) => {
          username: req.body.username || req.user.username,
          firstName: req.body.firstName || req.user.firstName,
          lastName: req.body.lastName || req.user.lastName,
-         birthDate: req.body.birthDate || req.user.birthDate,
+         bio: req.body.bio || req.user.bio,
          profilePicture: profilePicUrl || req.user.profilePicture,
       },
       {
