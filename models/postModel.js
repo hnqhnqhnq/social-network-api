@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const commentSchema = require("./commentModel");
+const { commentSchema } = require("./commentModel");
 
 const postSchema = mongoose.Schema({
    postedBy: {

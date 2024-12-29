@@ -2,6 +2,7 @@ const express = require("express");
 const authController = require("./../controllers/authController");
 const postController = require("./../controllers/postController");
 const uploadPicture = require("./../utils/multerConfig");
+const commentController = require("./../controllers/commentController");
 const {
    setPictureHeader,
 } = require("./../utils/requestHeaderPictureMiddleWare");
@@ -38,5 +39,10 @@ router
       postController.updatePost
    )
    .delete(authController.protect, postController.deletePost);
+
+router
+   .route("/comment/:postId")
+   .get(authController.protect, commentController.getCommentsOfAPost)
+   .post(authController.protect, commentController.addCommentToPost);
 
 module.exports = router;
