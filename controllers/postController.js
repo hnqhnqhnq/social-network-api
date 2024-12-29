@@ -103,31 +103,19 @@ exports.displayOnePost = catchAsync(async (req, res, next) => {
 exports.updatePost = catchAsync(async (req, res, next) => {
    const updatedPost = await Post.findOne({
       _id: req.params.postId,
-      postedBy: req.user._id,
    });
    if (!updatedPost) {
       return next(new AppError("Post not found!\n", 404));
    }
 
-   if (req.body.content) {
-      updatedPost.content = req.body.content;
-   }
-
-   if (req.files && req.files.length > 0) {
-      req.body.mediaFiles = req.files.map((file) => "/" + file.path);
-      updatedPost.mediaFiles = [...req.body.mediaFiles];
-   } else {
-      return next(new AppError("Provide media files!\n", 401));
-   }
-
    if (req.body.like !== undefined) {
-      if (req.body.like == "true") {
+      if (req.body.like) {
          updatedPost.likesCount++;
          updatedPost.likedBy.push(req.user._id);
-      } else {
+      } else if (!req.body.like) {
          updatedPost.likesCount--;
          updatedPost.likedBy = updatedPost.likedBy.filter(
-            (id) => id != req.user._id
+            (id) => id.toString() != req.user._id.toString()
          );
       }
    }

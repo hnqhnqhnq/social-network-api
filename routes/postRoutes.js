@@ -32,12 +32,7 @@ router
 router
    .route("/:postId")
    .get(authController.protect, postController.displayOnePost)
-   .patch(
-      authController.protect,
-      setPictureHeader("posts"),
-      uploadPicture.array("media", 10),
-      postController.updatePost
-   )
+   .patch(authController.protect, postController.updatePost)
    .delete(authController.protect, postController.deletePost);
 
 router
