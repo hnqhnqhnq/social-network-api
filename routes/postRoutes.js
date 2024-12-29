@@ -41,6 +41,10 @@ router
    .delete(authController.protect, postController.deletePost);
 
 router
+   .route("/likeState/:postId")
+   .get(authController.protect, postController.checkLikeState);
+
+router
    .route("/comment/:postId")
    .get(authController.protect, commentController.getCommentsOfAPost)
    .post(authController.protect, commentController.addCommentToPost);

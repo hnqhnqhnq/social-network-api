@@ -120,6 +120,18 @@ exports.updatePost = catchAsync(async (req, res, next) => {
       return next(new AppError("Provide media files!\n", 401));
    }
 
+   if (req.body.like !== undefined) {
+      if (req.body.like == "true") {
+         updatedPost.likesCount++;
+         updatedPost.likedBy.push(req.user._id);
+      } else {
+         updatedPost.likesCount--;
+         updatedPost.likedBy = updatedPost.likedBy.filter(
+            (id) => id != req.user._id
+         );
+      }
+   }
+
    await updatedPost.save();
 
    res.status(200).json({
@@ -143,5 +155,21 @@ exports.deletePost = catchAsync(async (req, res, next) => {
    res.status(204).json({
       status: "success",
       data: null,
+   });
+});
+
+exports.checkLikeState = catchAsync(async (req, res, next) => {
+   const post = await Post.findById(req.params.postId);
+   if (!post) {
+      return next(new AppError("Post not found!\n", 404));
+   }
+
+   const like = post.likedBy.some(
+      (id) => id.toString() === req.user._id.toString()
+   );
+
+   res.status(200).json({
+      status: "success",
+      like: like,
    });
 });
