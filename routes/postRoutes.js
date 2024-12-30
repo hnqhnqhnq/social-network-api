@@ -17,6 +17,11 @@ router
       uploadPicture.array("media", 10),
       postController.createPost
    );
+
+router
+   .route("/sharedPosts")
+   .get(authController.protect, postController.getMySharedPosts);
+
 router
    .route("/recent")
    .get(authController.protect, postController.displayRecentPosts);
@@ -43,5 +48,9 @@ router
    .route("/comment/:postId")
    .get(authController.protect, commentController.getCommentsOfAPost)
    .post(authController.protect, commentController.addCommentToPost);
+
+router
+   .route("/sharedPosts/:userId")
+   .get(authController.protect, postController.getUserSharedPosts);
 
 module.exports = router;

@@ -48,9 +48,11 @@ exports.displayRecentPosts = catchAsync(async (req, res, next) => {
 });
 
 exports.displayMyPosts = catchAsync(async (req, res, next) => {
-   const posts = await Post.find({ postedBy: req.user._id }).sort({
-      createdAt: -1,
-   });
+   const posts = await Post.find({ postedBy: req.user._id })
+      .sort({
+         createdAt: -1,
+      })
+      .populate("postedBy", "username profilePicture");
 
    if (!posts) {
       return next(new AppError("No posts!\n", 404));
@@ -66,9 +68,11 @@ exports.displayMyPosts = catchAsync(async (req, res, next) => {
 });
 
 exports.displayUserPosts = catchAsync(async (req, res, next) => {
-   const posts = await Post.find({ postedBy: req.params.userId }).sort({
-      createdAt: -1,
-   });
+   const posts = await Post.find({ postedBy: req.params.userId })
+      .sort({
+         createdAt: -1,
+      })
+      .populate("postedBy", "username profilePicture");
 
    if (!posts) {
       return next(new AppError("No posts!\n", 404));
@@ -103,7 +107,7 @@ exports.displayOnePost = catchAsync(async (req, res, next) => {
 exports.updatePost = catchAsync(async (req, res, next) => {
    const updatedPost = await Post.findOne({
       _id: req.params.postId,
-   });
+   }).populate("postedBy", "username profilePicture");
    if (!updatedPost) {
       return next(new AppError("Post not found!\n", 404));
    }
@@ -117,6 +121,12 @@ exports.updatePost = catchAsync(async (req, res, next) => {
          updatedPost.likedBy = updatedPost.likedBy.filter(
             (id) => id.toString() != req.user._id.toString()
          );
+      }
+   }
+
+   if (req.body.share !== undefined) {
+      if (req.body.share) {
+         updatedPost.sharedBy.push(req.user._id);
       }
    }
 
@@ -159,5 +169,41 @@ exports.checkLikeState = catchAsync(async (req, res, next) => {
    res.status(200).json({
       status: "success",
       like: like,
+   });
+});
+
+exports.getMySharedPosts = catchAsync(async (req, res, next) => {
+   const posts = await Post.find({ sharedBy: req.user._id }).populate(
+      "postedBy",
+      "username profilePicture"
+   );
+   if (!posts || posts.length === 0) {
+      return next(new AppError("Post not found!\n", 404));
+   }
+
+   res.status(200).json({
+      status: "success",
+      length: posts.length,
+      data: {
+         posts,
+      },
+   });
+});
+
+exports.getUserSharedPosts = catchAsync(async (req, res, next) => {
+   const posts = await Post.find({ sharedBy: req.params.userId }).populate(
+      "postedBy",
+      "username profilePicture"
+   );
+   if (!posts || posts.length === 0) {
+      return next(new AppError("Post not found!\n", 404));
+   }
+
+   res.status(200).json({
+      status: "success",
+      length: posts.length,
+      data: {
+         posts,
+      },
    });
 });
