@@ -88,3 +88,16 @@ exports.getProfile = catchAsync(async (req, res, next) => {
       },
    });
 });
+
+exports.searchUser = catchAsync(async (req, res, next) => {
+   const searchTerm = req.query.q;
+   const regex = new RegExp(searchTerm, "i");
+
+   const users = await User.find({ username: regex });
+
+   res.status(200).json({
+      status: "success",
+      results: users.length,
+      data: { users },
+   });
+});

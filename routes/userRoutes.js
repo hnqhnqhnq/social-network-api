@@ -24,6 +24,8 @@ router
       userController.updateUserProfile
    );
 
+router.route("/search").get(authController.protect, userController.searchUser);
+
 router.route("/:userId").get(authController.protect, userController.getProfile);
 
 module.exports = router;
