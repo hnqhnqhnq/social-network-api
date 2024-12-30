@@ -33,7 +33,8 @@ router
 router.route("/friends").get(authController.protect, userController.getFriends);
 router
    .route("/friends/:userId")
-   .get(authController.protect, userController.getFriendsOfUser);
+   .get(authController.protect, userController.getFriendsOfUser)
+   .delete(authController.protect, userController.deleteFriend);
 router.route("/:userId").get(authController.protect, userController.getProfile);
 
 module.exports = router;

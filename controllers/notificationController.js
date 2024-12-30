@@ -28,7 +28,7 @@ exports.friendNotification = catchAsync(async (req, res, next) => {
       deleted: false,
    });
    if (!notif) {
-      return next(new AppError("Not found\n", 404));
+      return next(new AppError("Not found notif\n", 404));
    }
 
    const toUser = await User.findById(notif.to);

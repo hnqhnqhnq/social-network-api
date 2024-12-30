@@ -122,6 +122,10 @@ exports.getFriends = catchAsync(async (req, res, next) => {
       "friends",
       "profilePicture username bio"
    );
+   if (!user) {
+      return next(new AppError("No user Found!\n", 404));
+   }
+
    const friends = user.friends;
 
    res.status(200).json({
@@ -138,6 +142,10 @@ exports.getFriendsOfUser = catchAsync(async (req, res, next) => {
       "friends",
       "profilePicture username bio"
    );
+   if (!user) {
+      return next(new AppError("No user Found!\n", 404));
+   }
+
    const friends = user.friends;
 
    res.status(200).json({
@@ -146,5 +154,39 @@ exports.getFriendsOfUser = catchAsync(async (req, res, next) => {
       data: {
          friends: friends,
       },
+   });
+});
+
+exports.deleteFriend = catchAsync(async (req, res, next) => {
+   const user = await User.findById(req.params.userId);
+   if (!user) {
+      return next(new AppError("No user Found!\n", 404));
+   }
+
+   if (
+      !req.user.friends.includes(user._id.toString()) ||
+      !user.friends.includes(req.user._id.toString())
+   ) {
+      return next(new AppError("Not friends!\n", 404));
+   }
+
+   req.user.friends = req.user.friends.filter(
+      (id) => id.toString() !== req.params.userId.toString()
+   );
+   req.user.friendsCount--;
+   await req.user.save();
+
+   user.friends = user.friends.filter(
+      (id) => id.toString() !== req.user._id.toString()
+   );
+   user.friendsCount--;
+   await user.save();
+
+   res.status(200).json({
+      status: "success",
+      user1Friends: req.user.friends,
+      user1FriendsCount: req.user.friendsCount,
+      user2Friends: user.friends,
+      user2FriendsCount: user.friendsCount,
    });
 });
