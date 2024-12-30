@@ -28,15 +28,17 @@ exports.displayRecentPosts = catchAsync(async (req, res, next) => {
    const limit = parseInt(req.query.limit) || 100;
    const skip = (page - 1) * limit;
 
-   const posts = await Post.find()
+   let posts = await Post.find()
       .sort({ postedAt: -1 })
       .skip(skip)
       .limit(limit)
-      .populate("postedBy", "username profilePicture");
+      .populate("postedBy", "_id username profilePicture");
 
    if (!posts) {
       return next(new AppError("No posts!\n", 404));
    }
+
+   posts = posts.filter((post) => req.user.friends.includes(post.postedBy._id));
 
    res.status(200).json({
       status: "success",

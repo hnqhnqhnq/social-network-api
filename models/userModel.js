@@ -56,6 +56,14 @@ const userSchema = mongoose.Schema({
    bio: {
       type: String,
    },
+   friends: {
+      type: [mongoose.Schema.Types.ObjectId],
+      ref: "User",
+   },
+   friendsCount: {
+      type: Number,
+      default: 0,
+   },
    accountCreatedAt: {
       type: Date,
       default: Date.now,

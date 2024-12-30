@@ -26,6 +26,14 @@ router
 
 router.route("/search").get(authController.protect, userController.searchUser);
 
+router
+   .route("/sendFriendRequest")
+   .post(authController.protect, userController.sendFriendRequest);
+
+router.route("/friends").get(authController.protect, userController.getFriends);
+router
+   .route("/friends/:userId")
+   .get(authController.protect, userController.getFriendsOfUser);
 router.route("/:userId").get(authController.protect, userController.getProfile);
 
 module.exports = router;
