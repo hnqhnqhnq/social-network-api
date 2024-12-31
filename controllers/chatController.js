@@ -13,9 +13,14 @@ exports.createChat = catchAsync(async (req, res, next) => {
    }
 
    let existingChat = await Chat.findOne({
-      $or: [
-         { user1: req.body.id1, user2: req.body.id2 },
-         { user1: req.body.id2, user2: req.body.id1 },
+      $and: [
+         {
+            $or: [
+               { user1: req.body.id1, user2: req.body.id2 },
+               { user1: req.body.id2, user2: req.body.id1 },
+            ],
+         },
+         { lastMessage: { $ne: "" } },
       ],
    });
 
