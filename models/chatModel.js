@@ -15,6 +15,10 @@ const chatSchema = mongoose.Schema({
       type: String,
       default: "",
    },
+   lastMessageSent: {
+      type: String,
+      default: Date.now,
+   },
 });
 
 const Chat = mongoose.model("Chat", chatSchema);

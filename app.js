@@ -10,6 +10,7 @@ const cookieParser = require("cookie-parser");
 const userRouter = require("./routes/userRoutes");
 const postRouter = require("./routes/postRoutes");
 const notificationRouter = require("./routes/notificationRoutes");
+const chatRouter = require("./routes/chatRoutes");
 const AppError = require("./utils/appError");
 const globalErrorHandler = require("./controllers/errorController");
 
@@ -53,6 +54,7 @@ app.use(xss());
 app.use(`${process.env.API_ROUTE}/users`, userRouter);
 app.use(`${process.env.API_ROUTE}/posts`, postRouter);
 app.use(`${process.env.API_ROUTE}/notifications`, notificationRouter);
+app.use(`${process.env.API_ROUTE}/chats`, chatRouter);
 app.all("*", (req, res, next) => {
    next(new AppError(`The endpoint ${req.originalUrl} does not exist!`, 404));
 });
