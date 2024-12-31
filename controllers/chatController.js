@@ -13,14 +13,9 @@ exports.createChat = catchAsync(async (req, res, next) => {
    }
 
    let existingChat = await Chat.findOne({
-      $and: [
-         {
-            $or: [
-               { user1: req.body.id1, user2: req.body.id2 },
-               { user1: req.body.id2, user2: req.body.id1 },
-            ],
-         },
-         { lastMessage: { $ne: "" } },
+      $or: [
+         { user1: req.body.id1, user2: req.body.id2 },
+         { user1: req.body.id2, user2: req.body.id1 },
       ],
    });
 
@@ -48,7 +43,6 @@ exports.createChat = catchAsync(async (req, res, next) => {
 exports.getChats = catchAsync(async (req, res, next) => {
    const chats = await Chat.find({
       $or: [{ user1: req.user._id }, { user2: req.user._id }],
-      lastMessage: { $ne: "" },
    })
       .sort({ lastMessageSent: -1 })
       .populate("user1", "username profilePicture")
