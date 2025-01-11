@@ -13,7 +13,7 @@ const postSchema = mongoose.Schema({
    },
    mediaFiles: {
       type: [String],
-      required: true,
+      required: false,
    },
    content: {
       type: String,
