@@ -77,6 +77,10 @@ const userSchema = mongoose.Schema({
       type: Date,
       select: false,
    },
+   role: {
+      type: String,
+      default: "user",
+   },
 });
 // Methods
 
